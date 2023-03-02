@@ -40,11 +40,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<LoadBackEnd>(context, listen: false);
+    final data = Provider.of<Authcontroler>(
+      context,
+    );
+
     print('Main page build');
     return Scaffold(
       drawer: CustomDrawer(
-        Name: Name,
-        image: "images/avatar.png",
+        Name: data.name,
+        image: data.photourl,
       ),
       appBar: AppBar(
         title: Column(

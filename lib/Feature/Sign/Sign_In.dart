@@ -142,6 +142,7 @@ class _SignInState extends State<SignIn> {
                       textsize: 17.sp,
                       onPressed: () async {
                         await value.SignIn(email: Email, password: password);
+                        value.check(value == false);
                       });
                 },
               )),
@@ -162,6 +163,7 @@ class _SignInState extends State<SignIn> {
                     textsize: 17.sp,
                     onPressed: () {
                       value.signInWithGoogle();
+                      value.check(value == true);
                     },
                   );
                 },

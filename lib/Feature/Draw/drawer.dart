@@ -45,7 +45,7 @@ class CustomDrawer extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: CircleAvatar(
                         radius: 50.r,
-                        backgroundImage: AssetImage(
+                        backgroundImage: NetworkImage(
                           image,
                         ),
                         child: ClipRRect(
@@ -166,22 +166,14 @@ class CustomDrawer extends StatelessWidget {
               builder: (context, value, child) {
                 return ListTile(
                   onTap: () {
-                    if (value.Googlecheck != true) {
-                      _signOut().then((value) {
-                        Navigator.pushReplacement(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    new SignIn()));
-                      });
+                    if (value.Googlecheck == true) {
+                      print("google sign function work");
+                      value.handleGoogleSignOut(context);
                     } else {
-                      _fsignOut().then((value) => Navigator.pushReplacement(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  new SignIn())));
+                      print(value.Googlecheck);
+                      print("simple way sign function work");
+                      _fsignOut();
                     }
-                    print(value.Googlecheck);
                   },
                   iconColor: appcolor.white,
                   tileColor: appcolor.white.withOpacity(0.5),
