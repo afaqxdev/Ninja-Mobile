@@ -12,4 +12,9 @@ class localdatabase {
     SharedPreferences _shper = await SharedPreferences.getInstance();
     return _shper.getString(user_id).toString();
   }
+
+  removedata() async {
+    SharedPreferences _shper = await SharedPreferences.getInstance();
+    _shper.clear();
+  }
 }

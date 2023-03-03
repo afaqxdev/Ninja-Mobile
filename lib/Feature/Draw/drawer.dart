@@ -1,3 +1,4 @@
+import 'package:Ninja/Core/BackEnd/signIn_signOut.dart';
 import 'package:Ninja/Core/Firebase/auth.dart';
 import 'package:Ninja/Feature/Sign/Sign_In.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../Core/Common_Widget/Custom_Text.dart';
 import '../../../Core/Helper/Color.dart';
 import '../../../Core/Helper/Common_Var.dart';
+import '../../Core/LocalDB/localdb.dart';
 
 // ignore: must_be_immutable
 class CustomDrawer extends StatelessWidget {
@@ -30,6 +32,7 @@ class CustomDrawer extends StatelessWidget {
   final String Name;
   final String image;
   Widget build(BuildContext context) {
+    final check = Provider.of<CheckSignInandOut>(context);
     return WillPopScope(
       child: Drawer(
         backgroundColor: appcolor.buttonColor,
@@ -166,14 +169,18 @@ class CustomDrawer extends StatelessWidget {
               builder: (context, value, child) {
                 return ListTile(
                   onTap: () {
-                    if (value.Googlecheck == true) {
+                    if (check.getcheckedSign() == true) {
                       print("google sign function work");
                       value.handleGoogleSignOut(context);
+                      localdatabase ldb = localdatabase();
+                      ldb.removedata();
                     } else {
                       print(value.Googlecheck);
                       print("simple way sign function work");
                       _fsignOut();
                     }
+                    localdatabase ldb = localdatabase();
+                    ldb.removedata();
                   },
                   iconColor: appcolor.white,
                   tileColor: appcolor.white.withOpacity(0.5),

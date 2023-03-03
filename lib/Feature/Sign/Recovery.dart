@@ -1,4 +1,5 @@
 import 'package:Ninja/Core/Firebase/auth.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class _RecoveryState extends State<Recovery> {
   AppColor appColor = AppColor();
 
   late String restpassword;
+  final Duration initialDelay = Duration(seconds: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -48,40 +50,55 @@ class _RecoveryState extends State<Recovery> {
           SizedBox(
             height: 60.h,
           ),
-          CustomText(
-            name: "Recovery Password",
-            size: 30.sp,
-            color: Colors.black,
-          ),
-          fixHeight,
-          CustomText(
-            name: "Please Enter Your Email Address To",
-            size: 16.sp,
-            color: Colors.black.withOpacity(0.4),
-          ),
-          CustomText(
-            name: "Recieve a Verification Code",
-            size: 16.sp,
-            color: Colors.black.withOpacity(0.4),
-          ),
-          Height,
-          Height,
-          Height,
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(left: 25.w),
+          DelayedDisplay(
+            delay: initialDelay,
             child: CustomText(
-              name: "Email Address",
-              size: 18.sp,
-              color: Colors.black.withOpacity(0.6),
+              name: "Recovery Password",
+              size: 30.sp,
+              color: Colors.black,
             ),
           ),
           fixHeight,
-          CustomTextfield(
-            hintext: "Email",
-            onchanged: (value) {
-              restpassword = value;
-            },
+          DelayedDisplay(
+            delay: initialDelay,
+            child: CustomText(
+              name: "Please Enter Your Email Address To",
+              size: 16.sp,
+              color: Colors.black.withOpacity(0.4),
+            ),
+          ),
+          DelayedDisplay(
+            delay: initialDelay,
+            child: CustomText(
+              name: "Recieve a Verification Code",
+              size: 16.sp,
+              color: Colors.black.withOpacity(0.4),
+            ),
+          ),
+          Height,
+          Height,
+          Height,
+          DelayedDisplay(
+            delay: initialDelay,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: 25.w),
+              child: CustomText(
+                name: "Email Address",
+                size: 18.sp,
+                color: Colors.black.withOpacity(0.6),
+              ),
+            ),
+          ),
+          fixHeight,
+          DelayedDisplay(
+            delay: initialDelay,
+            child: CustomTextfield(
+              hintext: "Email",
+              onchanged: (value) {
+                restpassword = value;
+              },
+            ),
           ),
           Height,
           Height,
@@ -90,13 +107,16 @@ class _RecoveryState extends State<Recovery> {
               width: 300.w,
               child: Consumer<Authcontroler>(
                 builder: (context, value, child) {
-                  return CustomButton(
-                    buttonname: 'Continue',
-                    color: appColor.buttonColor,
-                    textcolor: Colors.white,
-                    onPressed: () {
-                      value.passwordRest(remail: restpassword);
-                    },
+                  return DelayedDisplay(
+                    delay: initialDelay,
+                    child: CustomButton(
+                      buttonname: 'Continue',
+                      color: appColor.buttonColor,
+                      textcolor: Colors.white,
+                      onPressed: () {
+                        value.passwordRest(remail: restpassword);
+                      },
+                    ),
                   );
                 },
               )),

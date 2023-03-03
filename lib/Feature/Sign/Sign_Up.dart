@@ -1,4 +1,6 @@
+import 'package:Ninja/Core/BackEnd/signIn_signOut.dart';
 import 'package:Ninja/Core/Firebase/auth.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +21,15 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   late String Email, Password, name;
+  final Duration initialDelay = Duration(seconds: 1);
+
   AppColor appColor = AppColor();
   @override
   Widget build(BuildContext context) {
-    Provider.of<Authcontroler>(context, listen: false);
+    final check = Provider.of<CheckSignInandOut>(
+      context,
+    );
+
     return Scaffold(
       backgroundColor: appColor.mainColor,
       body: Padding(
@@ -49,69 +56,93 @@ class _SignUpState extends State<SignUp> {
             SizedBox(
               height: 40.h,
             ),
-            CustomText(
-              name: "Create Account",
-              size: 30.sp,
-              color: appColor.black,
-            ),
-            fixHeight,
-            CustomText(
-              name: "Let's Create Account Togather",
-              size: 16.sp,
-              color: appColor.white,
-            ),
-            Height,
-            Height,
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 25.w),
+            DelayedDisplay(
+              delay: initialDelay,
               child: CustomText(
-                name: "Your Name",
-                size: 18.sp,
-                color: Colors.black.withOpacity(0.6),
+                name: "Create Account",
+                size: 30.sp,
+                color: appColor.black,
               ),
             ),
             fixHeight,
-            CustomTextfield(
-              hintext: "Name",
-              onchanged: (value) {
-                name = value;
-              },
+            DelayedDisplay(
+              delay: initialDelay,
+              child: CustomText(
+                name: "Let's Create Account Togather",
+                size: 16.sp,
+                color: appColor.white,
+              ),
             ),
             Height,
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 25.w),
-              child: CustomText(
-                name: "Email Address",
-                size: 18.sp,
-                color: Colors.black.withOpacity(0.6),
+            Height,
+            DelayedDisplay(
+              delay: initialDelay,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: 25.w),
+                child: CustomText(
+                  name: "Your Name",
+                  size: 18.sp,
+                  color: Colors.black.withOpacity(0.6),
+                ),
               ),
             ),
             fixHeight,
-            CustomTextfield(
-              hintext: "Email Address",
-              onchanged: (value) {
-                Email = value;
-              },
+            DelayedDisplay(
+              delay: initialDelay,
+              child: CustomTextfield(
+                hintext: "Name",
+                onchanged: (value) {
+                  name = value;
+                },
+              ),
             ),
-            fixHeight,
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 25.w),
-              child: CustomText(
-                name: "Password",
-                size: 18.sp,
-                color: Colors.black.withOpacity(0.6),
+            Height,
+            DelayedDisplay(
+              delay: initialDelay,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: 25.w),
+                child: CustomText(
+                  name: "Email Address",
+                  size: 18.sp,
+                  color: Colors.black.withOpacity(0.6),
+                ),
               ),
             ),
             fixHeight,
-            CustomTextfield(
-              onchanged: (value) {
-                Password = value;
-              },
-              hintext: "Password",
-              passicon: Icon(Icons.remove_red_eye_outlined),
+            DelayedDisplay(
+              delay: initialDelay,
+              child: CustomTextfield(
+                hintext: "Email Address",
+                onchanged: (value) {
+                  Email = value;
+                },
+              ),
+            ),
+            fixHeight,
+            DelayedDisplay(
+              delay: initialDelay,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: 25.w),
+                child: CustomText(
+                  name: "Password",
+                  size: 18.sp,
+                  color: Colors.black.withOpacity(0.6),
+                ),
+              ),
+            ),
+            fixHeight,
+            DelayedDisplay(
+              delay: initialDelay,
+              child: CustomTextfield(
+                onchanged: (value) {
+                  Password = value;
+                },
+                hintext: "Password",
+                passicon: Icon(Icons.remove_red_eye_outlined),
+              ),
             ),
             Height,
             fixHeight,
@@ -121,19 +152,23 @@ class _SignUpState extends State<SignUp> {
                 width: 270.w,
                 child: Consumer<Authcontroler>(
                   builder: (context, value, child) {
-                    return CustomButton1(
-                      widget: Text(
-                        "Sing Up",
-                        style:
-                            TextStyle(color: appColor.white, fontSize: 17.sp),
+                    return DelayedDisplay(
+                      delay: initialDelay,
+                      child: CustomButton1(
+                        widget: Text(
+                          "Sing Up",
+                          style:
+                              TextStyle(color: appColor.white, fontSize: 17.sp),
+                        ),
+                        color: appColor.buttonColor,
+                        textcolor: appColor.white,
+                        textsize: 17.sp,
+                        onPressed: () {
+                          check.checkedSign(false);
+                          value.signup(
+                              email: Email, name: name, password: Password);
+                        },
                       ),
-                      color: appColor.buttonColor,
-                      textcolor: appColor.white,
-                      textsize: 17.sp,
-                      onPressed: () {
-                        value.signup(
-                            email: Email, name: name, password: Password);
-                      },
                     );
                   },
                 )),
@@ -143,39 +178,46 @@ class _SignUpState extends State<SignUp> {
                 width: 270.w,
                 child:
                     Consumer<Authcontroler>(builder: (context, value, child) {
-                  return imageButton(
-                    widget: Image.asset(
-                      'images/google.png',
-                      scale: 3,
+                  return DelayedDisplay(
+                    delay: initialDelay,
+                    child: imageButton(
+                      widget: Image.asset(
+                        'images/google.png',
+                        scale: 3,
+                      ),
+                      buttonname: "Sign Up with Google",
+                      colors: appColor.white,
+                      color: appColor.buttonColor,
+                      textsize: 17.sp,
+                      onPressed: () {
+                        check.checkedSign(true);
+                        value.signInWithGoogle();
+                      },
                     ),
-                    buttonname: "Sign Up with Google",
-                    colors: appColor.white,
-                    color: appColor.buttonColor,
-                    textsize: 17.sp,
-                    onPressed: () {
-                      value.signInWithGoogle();
-                    },
                   );
                 })),
-            Container(
-              margin: EdgeInsets.only(top: 80.h),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                CustomText(
-                    name: "Already Have a Account?",
-                    size: 16.sp,
-                    color: appColor.white),
-                InkWell(
-                  onTap: (() {
-                    Navigator.pushNamed(context, RoutesName.SingIN);
-                  }),
-                  child: CustomText(
-                      name: "\tSign In",
+            DelayedDisplay(
+              delay: initialDelay,
+              child: Container(
+                margin: EdgeInsets.only(top: 80.h),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  CustomText(
+                      name: "Already Have a Account?",
                       size: 16.sp,
-                      fontweight: FontWeight.bold,
-                      color: appColor.buttonColor),
-                )
-              ]),
+                      color: appColor.white),
+                  InkWell(
+                    onTap: (() {
+                      Navigator.pushNamed(context, RoutesName.SingIN);
+                    }),
+                    child: CustomText(
+                        name: "\tSign In",
+                        size: 16.sp,
+                        fontweight: FontWeight.bold,
+                        color: appColor.buttonColor),
+                  )
+                ]),
+              ),
             )
           ]),
         ),

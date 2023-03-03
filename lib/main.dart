@@ -1,5 +1,6 @@
 import 'package:Ninja/Core/BackEnd/cart_provider.dart';
 import 'package:Ninja/Core/BackEnd/favorite.dart';
+import 'package:Ninja/Core/BackEnd/signIn_signOut.dart';
 import 'package:Ninja/Core/Firebase/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => CartProvider()),
           ChangeNotifierProvider(create: (context) => FavoriteProvider()),
           ChangeNotifierProvider(create: (context) => Authcontroler()),
+          ChangeNotifierProvider(create: (context) => CheckSignInandOut()),
         ],
         child: ScreenUtilInit(
             builder: ((context, child) => GetMaterialApp(
