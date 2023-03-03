@@ -3,6 +3,7 @@ import 'package:Ninja/Core/Firebase/auth.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../Core/Common_Widget/Custom_Text.dart';
 import '../../../Core/Common_Widget/Image_Button.dart';
@@ -11,6 +12,7 @@ import '../../../Core/Common_Widget/custom_textfield.dart';
 import '../../../Core/Helper/Color.dart';
 import '../../../Core/Helper/Common_Var.dart';
 import '../../../Core/Routes/routesName.dart';
+import '../../Core/Helper/snackbar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -24,6 +26,7 @@ class _SignInState extends State<SignIn> {
   AppColor appColor = AppColor();
   final Duration initialDelay = Duration(seconds: 1);
   ValueNotifier<bool> toogle = ValueNotifier<bool>(false);
+  final _fromkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Provider.of<Authcontroler>(context, listen: false);
@@ -56,66 +59,84 @@ class _SignInState extends State<SignIn> {
           ),
           Height,
           Height,
-          DelayedDisplay(
-            delay: initialDelay,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 25.w),
-              child: CustomText(
-                name: "Email Address",
-                size: 18.sp,
-                color: Colors.black.withOpacity(0.6),
-              ),
-            ),
-          ),
-          fixHeight,
-          DelayedDisplay(
-            delay: initialDelay,
-            child: CustomTextfield(
-              hintext: "Email",
-              onchanged: (value) {
-                Email = value;
-              },
-            ),
-          ),
-          Height,
-          Height,
-          DelayedDisplay(
-            delay: initialDelay,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 25.w),
-              child: CustomText(
-                name: "Password",
-                size: 18.sp,
-                color: Colors.black.withOpacity(0.6),
-              ),
-            ),
-          ),
-          fixHeight,
-          ValueListenableBuilder(
-            valueListenable: toogle,
-            builder: (context, value, child) {
-              return DelayedDisplay(
-                delay: initialDelay,
-                child: CustomTextfield(
-                    hintext: "Password",
-                    onchanged: (value) {
-                      password = value;
+          Form(
+            key: _fromkey,
+            child: Column(
+              children: [
+                DelayedDisplay(
+                  delay: initialDelay,
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 25.w),
+                    child: CustomText(
+                      name: "Email Address",
+                      size: 18.sp,
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                  ),
+                ),
+                fixHeight,
+                DelayedDisplay(
+                  delay: initialDelay,
+                  child: CustomTextfield(
+                    hintext: "Email",
+                    vlid: (value) {
+                      if (value!.isEmpty) {
+                        CutomSnackbar.snackBar("Please Enter Email", " Email");
+                      }
                     },
-                    showtext: toogle.value,
-                    passicon: InkWell(
-                      onTap: () {
-                        toogle.value = !toogle.value;
-                      },
-                      child: Icon(
-                          toogle.value
-                              ? Icons.visibility_off_sharp
-                              : Icons.visibility_sharp,
-                          color: appColor.grey),
-                    )),
-              );
-            },
+                    onchanged: (value) {
+                      Email = value;
+                    },
+                  ),
+                ),
+                Height,
+                Height,
+                DelayedDisplay(
+                  delay: initialDelay,
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 25.w),
+                    child: CustomText(
+                      name: "Password",
+                      size: 18.sp,
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                  ),
+                ),
+                fixHeight,
+                ValueListenableBuilder(
+                  valueListenable: toogle,
+                  builder: (context, value, child) {
+                    return DelayedDisplay(
+                      delay: initialDelay,
+                      child: CustomTextfield(
+                          vlid: (value) {
+                            if (value!.isEmpty) {
+                              CutomSnackbar.snackBar(
+                                  "Please Enter pasword", " Email");
+                            }
+                          },
+                          hintext: "Password",
+                          onchanged: (value) {
+                            password = value;
+                          },
+                          showtext: toogle.value,
+                          passicon: InkWell(
+                            onTap: () {
+                              toogle.value = !toogle.value;
+                            },
+                            child: Icon(
+                                toogle.value
+                                    ? Icons.visibility_off_sharp
+                                    : Icons.visibility_sharp,
+                                color: appColor.grey),
+                          )),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
           fixHeight,
           InkWell(
@@ -150,8 +171,11 @@ class _SignInState extends State<SignIn> {
                         textcolor: appColor.white,
                         textsize: 17.sp,
                         onPressed: () async {
-                          await value.SignIn(email: Email, password: password);
-                          check.checkedSign(true);
+                          if (_fromkey.currentState!.validate()) {
+                            await value.SignIn(
+                                email: Email, password: password);
+                            check.checkedSign(true);
+                          }
                         }),
                   );
                 },
